@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
+
 namespace FSH.WebApi.Infrastructure.Persistence.Initialization;
 
 internal class ApplicationDbSeeder

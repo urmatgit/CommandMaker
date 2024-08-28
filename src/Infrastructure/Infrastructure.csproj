@@ -5,6 +5,13 @@
         <AssemblyName>FSH.WebApi.Infrastructure</AssemblyName>
     </PropertyGroup>
     <ItemGroup>
+      <Compile Remove="Catalog\BrandGeneratorJob.cs" />
+      <Compile Remove="Catalog\BrandSeeder.cs" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Remove="Catalog\brands.json" />
+    </ItemGroup>
+    <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
     <ItemGroup>
@@ -76,5 +83,8 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Catalog\" />
     </ItemGroup>
 </Project>
