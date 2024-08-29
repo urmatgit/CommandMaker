@@ -5,6 +5,14 @@
         <AssemblyName>FSH.WebApi.Application</AssemblyName>
     </PropertyGroup>
     <ItemGroup>
+      <Compile Remove="Catalog\Brands\**" />
+      <Compile Remove="Catalog\Products\**" />
+      <EmbeddedResource Remove="Catalog\Brands\**" />
+      <EmbeddedResource Remove="Catalog\Products\**" />
+      <None Remove="Catalog\Brands\**" />
+      <None Remove="Catalog\Products\**" />
+    </ItemGroup>
+    <ItemGroup>
         <PackageReference Include="Ardalis.Specification" Version="6.1.0" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.2" />
         <PackageReference Include="Mapster" Version="7.3.0" />

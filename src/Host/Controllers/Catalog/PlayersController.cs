@@ -1,4 +1,5 @@
 using FSH.WebApi.Application.Catalog.Players;
+using FSH.WebApi.Application.Catalog.Teams;
 
 namespace FSH.WebApi.Host.Controllers.Catalog;
 
@@ -18,6 +19,13 @@ public class PlayersController : VersionedApiController
     public Task<PlayerDetailsDto> GetAsync(Guid id)
     {
         return Mediator.Send(new GetPlayerRequest(id));
+    }
+    [HttpGet("getbyteamid/{id:guid}")]
+    [MustHavePermission(FSHAction.View, FSHResource.Players)]
+    [OpenApiOperation("Get players by team id.", "")]
+    public async Task<List<PlayerDto>> GetByPlayersIdAsync(Guid id)
+    {
+        return await Mediator.Send(new GetPlayersByTeamIdRequest(id));
     }
 
     [HttpGet("dapper")]

@@ -5,6 +5,7 @@ namespace  FSH.WebApi.Shared.Authorization;
 public static class FSHAction
 {
     public const string View = nameof(View);
+    public const string ViewAll = nameof(ViewAll);
     public const string Search = nameof(Search);
     public const string Create = nameof(Create);
     public const string Update = nameof(Update);
@@ -64,7 +65,7 @@ public static class FSHPermissions
         new("Delete Brands", FSHAction.Delete, FSHResource.Brands),
         new("Generate Brands", FSHAction.Generate, FSHResource.Brands),
         new("Clean Brands", FSHAction.Clean, FSHResource.Brands),
-        
+        new("ViewAll Games", FSHAction.ViewAll, FSHResource.Games),
 new("View Games", FSHAction.View, FSHResource.Games, IsBasic: true),
 		new("Search Games", FSHAction.Search, FSHResource.Games, IsBasic: true),
 		new("Create Games", FSHAction.Create, FSHResource.Games),

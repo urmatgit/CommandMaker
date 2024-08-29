@@ -19,7 +19,13 @@ public class TeamsController : VersionedApiController
     {
         return Mediator.Send(new GetTeamRequest(id));
     }
-
+    [HttpGet("getbygameid/{id:guid}")]
+    [MustHavePermission(FSHAction.View, FSHResource.Teams)]
+    [OpenApiOperation("Get team by game id.", "")]
+    public async Task<List<TeamDto>> GetByGameIdAsync(Guid id)
+    {
+        return await Mediator.Send(new GetTeamsByGameIdRequest(id));
+    }
     [HttpGet("dapper")]
     [MustHavePermission(FSHAction.View, FSHResource.Teams)]
     [OpenApiOperation("Get team details via dapper.", "")]

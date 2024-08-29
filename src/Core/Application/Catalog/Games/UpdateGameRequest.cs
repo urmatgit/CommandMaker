@@ -39,7 +39,7 @@ public class UpdateGameRequestHandler : IRequestHandler<UpdateGameRequest, Guid>
         ?? throw new NotFoundException(_t["Game {0} Not Found.", request.Id]);
 
 
-        game.Update(request.Name, request.Description, request.DateTime);
+        game.Update(request.Name,  request.DateTime, request.Description);
 
         await _repository.UpdateAsync(game, cancellationToken);
 

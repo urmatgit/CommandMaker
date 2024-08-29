@@ -17,7 +17,7 @@ public class PlayerConfig : IEntityTypeConfiguration<Player>
         builder.Property(b => b.Age)
             .IsRequired()
             .HasMaxLength(2);
-        builder.HasKey(b => b);
+        
             
 
 
@@ -53,30 +53,30 @@ public class GameConfig : IEntityTypeConfiguration<Game>
     }
 }
 
-public class BrandConfig : IEntityTypeConfiguration<Brand>
-{
-    public void Configure(EntityTypeBuilder<Brand> builder)
-    {
-        builder.IsMultiTenant();
+//public class BrandConfig : IEntityTypeConfiguration<Brand>
+//{
+//    public void Configure(EntityTypeBuilder<Brand> builder)
+//    {
+//        builder.IsMultiTenant();
 
-        builder
-            .Property(b => b.Name)
-                .HasMaxLength(256);
-    }
-}
+//        builder
+//            .Property(b => b.Name)
+//                .HasMaxLength(256);
+//    }
+//}
 
-public class ProductConfig : IEntityTypeConfiguration<Product>
-{
-    public void Configure(EntityTypeBuilder<Product> builder)
-    {
-        builder.IsMultiTenant();
+//public class ProductConfig : IEntityTypeConfiguration<Product>
+//{
+//    public void Configure(EntityTypeBuilder<Product> builder)
+//    {
+//        builder.IsMultiTenant();
 
-        builder
-            .Property(b => b.Name)
-                .HasMaxLength(1024);
+//        builder
+//            .Property(b => b.Name)
+//                .HasMaxLength(1024);
 
-        builder
-            .Property(p => p.ImagePath)
-                .HasMaxLength(2048);
-    }
-}
+//        builder
+//            .Property(p => p.ImagePath)
+//                .HasMaxLength(2048);
+//    }
+//}

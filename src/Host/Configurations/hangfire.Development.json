@@ -23,7 +23,7 @@
 
       "StorageProvider": "postgresql",
       //"ConnectionString": "Host=localhost;Database=fullStackHeroDb;Username=admin;Password=urmat82;Pooling=true;",
-      "ConnectionString": "Host=localhost;Database=fullStackHeroOrg;Username=postgres;Password=IamAdmin1;Pooling=true;",
+      "ConnectionString": "Host=localhost;Database=VolleyGame;Username=postgres;Password=IamAdmin1;Pooling=true;",
       //"StorageProvider": "mssql",
       //"ConnectionString": "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=fullStackHeroDb;Integrated Security=True;MultipleActiveResultSets=True",
       "Options": {

@@ -37,7 +37,7 @@ public abstract class BaseDbContext : MultiTenantIdentityDbContext<ApplicationUs
     {
         // QueryFilters need to be applied before base.OnModelCreating
         modelBuilder.AppendGlobalQueryFilter<ISoftDelete>(s => s.DeletedOn == null);
-
+        
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);

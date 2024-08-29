@@ -50,6 +50,10 @@
         </None>
     </ItemGroup>
     <ItemGroup>
+      <Compile Remove="Controllers\Catalog\BrandsController.cs" />
+      <Compile Remove="Controllers\Catalog\ProductsController.cs" />
+    </ItemGroup>
+    <ItemGroup>
       <Folder Include="Databases\Host\" />
     </ItemGroup>
     <ItemGroup>

@@ -17,23 +17,25 @@ public class Player : AuditableEntity, IAggregateRoot
     public DefaultIdType UserId { get;set; }
     public DefaultIdType TeamId { get; private set; }
     public virtual Team Team { get; private set; }
-    public Player(string name,string? phone,  byte age, byte level, DefaultIdType teamId)
+    public Player(string name,string? phone,  byte age, byte level,DefaultIdType userId,  DefaultIdType teamId)
     {
         Name = name;
         Age = age;
         Level = level;
         TeamId = teamId;
         Phone = phone;
+        UserId = userId;
 
     }
 
-    public Player Update(string? name,string? phone, byte age, byte level, DefaultIdType teamId)
+    public Player Update(string? name,string? phone, byte age, byte level,DefaultIdType userid,  DefaultIdType teamId)
     {
         if (name is not null && Name?.Equals(name) is not true) Name = name;
         if (age != Age) Age = age;
         if (level != Level) Level = level;
         if (teamId != TeamId) TeamId = teamId;
         if (phone is not null && Phone?.Equals(phone) is not true) Phone = phone;
+        if (UserId!=userid) UserId = userid;
         return this;
     }
 }

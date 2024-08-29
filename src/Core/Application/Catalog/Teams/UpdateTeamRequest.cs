@@ -30,7 +30,7 @@ public class UpdateTeamRequestHandler : IRequestHandler<UpdateTeamRequest, Guid>
 
                
         
-        var updatedTeam = team.Update(request.Name, request.Captain, request.UserId, request.Description, request.GameId);
+        var updatedTeam = team.Update(request.Name, request.Captain, request.Description, request.UserId, request.GameId);
 
         // Add Domain Events to be raised after the commit
         team.DomainEvents.Add(EntityUpdatedEvent.WithEntity(team));

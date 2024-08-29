@@ -1,12 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Migrators.PostgreSQL.Migrations.Application
+namespace Migrators.PostgreSQL.Migrations
 {
-    public partial class InitialMigration : Migration
+    /// <inheritdoc />
+    public partial class InitGame : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
@@ -40,13 +43,14 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 });
 
             migrationBuilder.CreateTable(
-                name: "Brands",
+                name: "Games",
                 schema: "Catalog",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
+                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     TenantId = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -57,7 +61,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Brands", x => x.Id);
+                    table.PrimaryKey("PK_Games", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -112,16 +116,16 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 });
 
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "Teams",
                 schema: "Catalog",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Captain = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
-                    Rate = table.Column<decimal>(type: "numeric", nullable: false),
-                    ImagePath = table.Column<string>(type: "character varying(2048)", maxLength: 2048, nullable: true),
-                    BrandId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    GameId = table.Column<Guid>(type: "uuid", nullable: false),
                     TenantId = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -132,12 +136,12 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.PrimaryKey("PK_Teams", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_Brands_BrandId",
-                        column: x => x.BrandId,
+                        name: "FK_Teams_Games_GameId",
+                        column: x => x.GameId,
                         principalSchema: "Catalog",
-                        principalTable: "Brands",
+                        principalTable: "Games",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -267,11 +271,43 @@ namespace Migrators.PostgreSQL.Migrations.Application
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_BrandId",
+            migrationBuilder.CreateTable(
+                name: "Players",
                 schema: "Catalog",
-                table: "Products",
-                column: "BrandId");
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Phone = table.Column<string>(type: "text", nullable: true),
+                    Age = table.Column<byte>(type: "smallint", maxLength: 2, nullable: false),
+                    Level = table.Column<byte>(type: "smallint", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TeamId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TenantId = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: false),
+                    LastModifiedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Players", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Players_Teams_TeamId",
+                        column: x => x.TeamId,
+                        principalSchema: "Catalog",
+                        principalTable: "Teams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Players_TeamId",
+                schema: "Catalog",
+                table: "Players",
+                column: "TeamId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleClaims_RoleId",
@@ -285,6 +321,12 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 table: "Roles",
                 columns: new[] { "NormalizedName", "TenantId" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Teams_GameId",
+                schema: "Catalog",
+                table: "Teams",
+                column: "GameId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserClaims_UserId",
@@ -325,6 +367,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 unique: true);
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
@@ -332,7 +375,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 schema: "Auditing");
 
             migrationBuilder.DropTable(
-                name: "Products",
+                name: "Players",
                 schema: "Catalog");
 
             migrationBuilder.DropTable(
@@ -356,7 +399,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 schema: "Identity");
 
             migrationBuilder.DropTable(
-                name: "Brands",
+                name: "Teams",
                 schema: "Catalog");
 
             migrationBuilder.DropTable(
@@ -366,6 +409,10 @@ namespace Migrators.PostgreSQL.Migrations.Application
             migrationBuilder.DropTable(
                 name: "Users",
                 schema: "Identity");
+
+            migrationBuilder.DropTable(
+                name: "Games",
+                schema: "Catalog");
         }
     }
 }
