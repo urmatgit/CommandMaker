@@ -44,5 +44,13 @@ public class GamesController : VersionedApiController
     public Task<Guid> DeleteAsync(Guid id)
     {
         return Mediator.Send(new DeleteGameRequest(id));
-    }    
+    }
+    [HttpPost("export")]
+    [MustHavePermission(FSHAction.Export, FSHResource.Games)]
+    [OpenApiOperation("Export a products.", "")]
+    public async Task<FileResult> ExportAsync(ExportGamesRequest filter)
+    {
+        var result = await Mediator.Send(filter);
+        return File(result, "application/octet-stream", "GameExports");
+    }
 }

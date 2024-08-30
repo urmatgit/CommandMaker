@@ -8,4 +8,5 @@ namespace FSH.WebApi.Domain.Common.Contracts;
 public interface ICheckOwner
 {
      Guid CreatedBy { get; set; }
+    bool IsArchive { get; set; }
 }

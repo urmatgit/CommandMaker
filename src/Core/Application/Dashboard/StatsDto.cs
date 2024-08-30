@@ -2,6 +2,7 @@ namespace FSH.WebApi.Application.Dashboard;
 
 public class StatsDto
 {
+    public int GameCount {  get; set; }
     public int PlayerCount { get; set; }
     public int TeamCount { get; set; }
     public int UserCount { get; set; }

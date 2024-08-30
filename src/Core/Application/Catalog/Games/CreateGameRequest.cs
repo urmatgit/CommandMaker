@@ -6,7 +6,7 @@ public class CreateGameRequest : IRequest<Guid>
     public string Name { get; set; } = default!;
 	public string? Description { get; set; }
 	public DateTime DateTime { get; set; }
-    
+    public TimeSpan? Time { get; set; }
 }
 
 
@@ -31,8 +31,9 @@ public class CreateGameRequestHandler : IRequestHandler<CreateGameRequest, Guid>
 
     public async Task<Guid> Handle(CreateGameRequest request, CancellationToken cancellationToken)
     {
-        var game = new Game(request.Name, request.Description, request.DateTime);
-
+        var datetime = new DateTime(request.DateTime.Year, request.DateTime.Month, request.DateTime.Day, request.Time.Value.Hours, request.Time.Value.Minutes, request.Time.Value.Seconds);
+        var game = new Game(request.Name, request.Description, datetime);
+    
         await _repository.AddAsync(game, cancellationToken);
 
         return game.Id;

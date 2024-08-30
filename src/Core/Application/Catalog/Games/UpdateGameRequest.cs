@@ -6,7 +6,8 @@ public class UpdateGameRequest : IRequest<Guid>
     public string Name { get; set; } = default!;
 	public string? Description { get; set; }
 	public DateTime DateTime { get; set; }
-    
+    public TimeSpan? Time { get; set; }
+
 }
 
 public class UpdateGameRequestValidator : CustomValidator<UpdateGameRequest>
@@ -37,9 +38,9 @@ public class UpdateGameRequestHandler : IRequestHandler<UpdateGameRequest, Guid>
 
         _ = game
         ?? throw new NotFoundException(_t["Game {0} Not Found.", request.Id]);
+        var datetime = new DateTime(request.DateTime.Year, request.DateTime.Month, request.DateTime.Day, request.Time.Value.Hours, request.Time.Value.Minutes, request.Time.Value.Seconds);
 
-
-        game.Update(request.Name,  request.DateTime, request.Description);
+        game.Update(request.Name, datetime, request.Description);
 
         await _repository.UpdateAsync(game, cancellationToken);
 

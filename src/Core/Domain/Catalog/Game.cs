@@ -9,10 +9,10 @@ public class Game :AuditableEntity, IAggregateRoot, ICheckOwner
 {
     public string Name { get; private set; }
     public string? Description { get; private set; }
-    public DateTime DateTime { get; private set; }
-    public bool IsArchive { get; private set; }
+    public DateTime? DateTime { get; private set; }
+    public bool IsArchive { get;  set; }
 
-    public Game(string name,string? description, DateTime dateTime,bool isArchive =false )
+    public Game(string name,string? description, DateTime? dateTime,bool isArchive =false )
     {
         Name = name;
         Description = description;
@@ -21,7 +21,7 @@ public class Game :AuditableEntity, IAggregateRoot, ICheckOwner
 
     }
 
-    public Game Update(string? name,DateTime dateTime, string? description,bool isArchive=false)
+    public Game Update(string? name,DateTime? dateTime, string? description,bool isArchive=false)
     {
         if (name is not null && Name?.Equals(name) is not true) Name = name;
         if (dateTime!=DateTime) DateTime = dateTime;
