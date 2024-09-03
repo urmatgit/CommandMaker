@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
         <RootNamespace>FSH.WebApi.Infrastructure</RootNamespace>
@@ -29,6 +29,7 @@
         <PackageReference Include="Hangfire.SQLite" Version="1.4.2" />
         <PackageReference Include="MailKit" Version="3.6.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.4" />
+        <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="7.0.20" />
         <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.4" />
         <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.4" />

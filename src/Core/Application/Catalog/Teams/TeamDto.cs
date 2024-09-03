@@ -11,4 +11,5 @@ public class TeamDto : IDto
 	public DefaultIdType GameId { get; set; }	
 			
 	public string GameName { get; set; } = default!;
+    
 }
