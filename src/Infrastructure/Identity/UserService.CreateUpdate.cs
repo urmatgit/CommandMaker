@@ -5,6 +5,7 @@ using FSH.WebApi.Application.Identity.Users;
 using FSH.WebApi.Domain.Common;
 using FSH.WebApi.Domain.Identity;
 using FSH.WebApi.Shared.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
@@ -117,7 +118,14 @@ internal partial class UserService
             PhoneNumberConfirmed=true,
             IsActive = true
         };
-
+        
+        if (await ExistsWithPhoneNumberAsync(request.PhoneNumber))
+        {
+            //Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
+            //errors.Add(_t["Phone number {0} is already registered.", request.PhoneNumber!],)
+            throw new InternalServerException( _t["Phone number {0} is already registered.", request.PhoneNumber!]);
+        }
+             
         var result = await _userManager.CreateAsync(user, request.Password);
         if (!result.Succeeded)
         {

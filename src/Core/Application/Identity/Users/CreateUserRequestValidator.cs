@@ -23,13 +23,12 @@ public class CreateUserRequestValidator : CustomValidator<CreateUserRequest>
         RuleFor(u => u.PhoneNumber).Cascade(CascadeMode.Stop)
             .NotEmpty()
             .NotNull().WithMessage("Phone Number is required.")
-       .MinimumLength(8).WithMessage("PhoneNumber must not be less than 10 characters.")
+       .MinimumLength(8).WithMessage("PhoneNumber must not be less than 11 characters.")
        .MaximumLength(20).WithMessage("PhoneNumber must not exceed 50 characters.")
        .Matches(new Regex(HelpersConstants.PhoneNumberRegularExpression)).WithMessage("PhoneNumber not valid")
-            
            .MustAsync(async (phone, _) => !await userService.ExistsWithPhoneNumberAsync(phone!))
-                .WithMessage((_, phone) => T["Phone number {0} is already registered.", phone!])
-                .Unless(u => string.IsNullOrWhiteSpace(u.PhoneNumber));
+                .WithMessage((_, phone) => T["Phone number {0} is already registered.", phone!]);
+                //.Unless(u => string.IsNullOrWhiteSpace(u.PhoneNumber));
 
         RuleFor(p => p.FirstName).Cascade(CascadeMode.Stop)
             .NotEmpty();
