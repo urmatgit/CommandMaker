@@ -10,6 +10,7 @@ using FSH.WebApi.Infrastructure.Multitenancy;
 using FSH.WebApi.Shared.Authorization;
 using FSH.WebApi.Shared.Multitenancy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -37,11 +38,19 @@ internal class TokenService : ITokenService
         _currentTenant = currentTenant;
         _securitySettings = securitySettings.Value;
     }
-
+    private async Task<ApplicationUser> getUser (string login)
+    {
+        if (login.Contains("@"))
+        {
+            return await _userManager.FindByEmailAsync(login);
+        }
+        return await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == login);
+    }
     public async Task<TokenResponse> GetTokenAsync(TokenRequest request, string ipAddress, CancellationToken cancellationToken)
     {
+        
         if (string.IsNullOrWhiteSpace(_currentTenant?.Id)
-            || await _userManager.FindByEmailAsync(request.Email.Trim().Normalize()) is not { } user
+            || await getUser(request.username.Trim()) is not { } user
             || !await _userManager.CheckPasswordAsync(user, request.Password))
         {
             throw new UnauthorizedException(_t["Authentication Failed."]);
@@ -52,10 +61,10 @@ internal class TokenService : ITokenService
             throw new UnauthorizedException(_t["User Not Active. Please contact the administrator."]);
         }
 
-        if (_securitySettings.RequireConfirmedAccount && !user.EmailConfirmed)
-        {
-            throw new UnauthorizedException(_t["E-Mail not confirmed."]);
-        }
+        //if (_securitySettings.RequireConfirmedAccount && !user.EmailConfirmed)
+        //{
+        //    throw new UnauthorizedException(_t["E-Mail not confirmed."]);
+        //}
 
         if (_currentTenant.Id != MultitenancyConstants.Root.Id)
         {
@@ -78,7 +87,10 @@ internal class TokenService : ITokenService
         var userPrincipal = GetPrincipalFromExpiredToken(request.Token);
         string? userEmail = userPrincipal.GetEmail();
         var user = await _userManager.FindByEmailAsync(userEmail!);
-        if (user is null)
+        var userPhone = userPrincipal.GetPhoneNumber();
+        var userByPhone=_userManager.Users.FirstOrDefaultAsync(x=>x.PhoneNumber == userPhone);
+
+        if (user is null && userByPhone is null)
         {
             throw new UnauthorizedException(_t["Authentication Failed."]);
         }
@@ -110,14 +122,14 @@ internal class TokenService : ITokenService
         new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, user.Id),
-            new(ClaimTypes.Email, user.Email!),
+            new(ClaimTypes.Email, user.Email?? string.Empty),
             new(FSHClaims.Fullname, $"{user.FirstName} {user.LastName}"),
             new(ClaimTypes.Name, user.FirstName ?? string.Empty),
             new(ClaimTypes.Surname, user.LastName ?? string.Empty),
             new(FSHClaims.IpAddress, ipAddress),
             new(FSHClaims.Tenant, _currentTenant!.Id),
             new(FSHClaims.ImageUrl, user.ImageUrl ?? string.Empty),
-            new(ClaimTypes.MobilePhone, user.PhoneNumber ?? string.Empty)
+            new(ClaimTypes.MobilePhone, user.PhoneNumber!)
         };
 
     private static string GenerateRefreshToken()

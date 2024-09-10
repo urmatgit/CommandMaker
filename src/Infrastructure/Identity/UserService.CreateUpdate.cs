@@ -44,10 +44,11 @@ internal partial class UserService
     private async Task<ApplicationUser> CreateOrUpdateFromPrincipalAsync(ClaimsPrincipal principal)
     {
         string? email = principal.FindFirstValue(ClaimTypes.Upn);
+        string? phone = principal.FindFirstValue(ClaimTypes.MobilePhone);
         string? username = principal.GetDisplayName();
-        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(username))
+        if (string.IsNullOrEmpty(phone) || string.IsNullOrEmpty(username))
         {
-            throw new InternalServerException(string.Format(_t["Username or Email not valid."]));
+            throw new InternalServerException(string.Format(_t["Username or Phone not valid."]));
         }
 
         var user = await _userManager.FindByNameAsync(username);
@@ -58,7 +59,7 @@ internal partial class UserService
 
         if (user is null)
         {
-            user = await _userManager.FindByEmailAsync(email);
+            user = await _userManager.FindByEmailAsync (email);
             if (user is not null && !string.IsNullOrWhiteSpace(user.ObjectId))
             {
                 throw new InternalServerException(string.Format(_t["Email {0} is already taken."], email));
@@ -81,6 +82,8 @@ internal partial class UserService
                 FirstName = principal.FindFirstValue(ClaimTypes.GivenName),
                 LastName = principal.FindFirstValue(ClaimTypes.Surname),
                 Email = email,
+                PhoneNumber = phone,
+                
                 NormalizedEmail = email.ToUpperInvariant(),
                 UserName = username,
                 NormalizedUserName = username.ToUpperInvariant(),
@@ -110,6 +113,8 @@ internal partial class UserService
             LastName = request.LastName,
             UserName = request.UserName,
             PhoneNumber = request.PhoneNumber,
+            //EmailConfirmed=true,
+            PhoneNumberConfirmed=true,
             IsActive = true
         };
 

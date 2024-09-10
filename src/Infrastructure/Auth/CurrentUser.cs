@@ -20,7 +20,7 @@ public class CurrentUser : ICurrentUser, ICurrentUserInitializer
         IsAuthenticated()
             ? _user!.GetEmail()
             : string.Empty;
-
+    public string? GetUserPhone()=> IsAuthenticated()? _user.GetPhoneNumber(): string.Empty;
     public bool IsAuthenticated() =>
         _user?.Identity?.IsAuthenticated is true;
 

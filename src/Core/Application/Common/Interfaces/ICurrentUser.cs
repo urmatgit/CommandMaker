@@ -9,6 +9,7 @@ public interface ICurrentUser
     Guid GetUserId();
 
     string? GetUserEmail();
+    string? GetUserPhone();
 
     string? GetTenant();
 
