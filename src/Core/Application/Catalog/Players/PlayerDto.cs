@@ -10,6 +10,6 @@ public class PlayerDto : IDto
 	public byte Level { get; set; }
 	public DefaultIdType UserId { get; set; }
 	public DefaultIdType TeamId { get; set; }	
-    			
-	public string TeamName { get; set; } = default!;
+    public DefaultIdType GameId { get; set; }
+    public string TeamName { get; set; } = default!;
 }

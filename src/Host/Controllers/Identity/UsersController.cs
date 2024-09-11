@@ -57,9 +57,8 @@ public class UsersController : VersionNeutralApiController
     [TenantIdHeader]
     [AllowAnonymous]
     [OpenApiOperation("Anonymous user creates a user.", "")]
-    [ProducesResponseType(500, Type = typeof(HttpValidationProblemDetails))]
     [ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Register))]
-    public async Task<string> SelfRegisterAsync(CreateUserRequest request)
+    public  Task<string> SelfRegisterAsync(CreateUserRequest request)
     {
         // TODO: check if registering anonymous users is actually allowed (should probably be an appsetting)
         // and return UnAuthorized when it isn't
@@ -72,7 +71,7 @@ public class UsersController : VersionNeutralApiController
         //catch (Exception ex) {
         //   throw new   HttpValidationProblemDetails()
         //}
-        return await _userService.CreateAsync(request, GetOriginFromRequest());
+        return  _userService.CreateAsync(request, GetOriginFromRequest());
     }
 
     [HttpPost("{id}/toggle-status")]

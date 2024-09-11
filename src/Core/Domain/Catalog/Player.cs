@@ -29,7 +29,10 @@ public class Player : AuditableEntity, IAggregateRoot
         UserId = userId;
         GameId=gameid;
     }
-
+    public Player(string name, string? phone, byte age, byte level, DefaultIdType userId, DefaultIdType teamId):this(name,phone,age,level,userId,teamId,Guid.Empty)
+    {
+        
+    }
     public Player Update(string? name,string? phone, byte age, byte level,DefaultIdType userid,  DefaultIdType teamId,DefaultIdType gameid)
     {
         if (name is not null && Name?.Equals(name) is not true) Name = name;

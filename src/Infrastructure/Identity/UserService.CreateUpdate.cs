@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using FSH.WebApi.Application.Common.Exceptions;
 using FSH.WebApi.Application.Common.Mailing;
 using FSH.WebApi.Application.Identity.Users;
@@ -130,7 +131,8 @@ internal partial class UserService
         var result = await _userManager.CreateAsync(user, request.Password);
         if (!result.Succeeded)
         {
-            throw new InternalServerException(_t["Validation Errors Occurred."], result.GetErrors(_t));
+            var errors = result.GetErrors(_t);
+            throw new InternalServerException(string.Join('\n', errors), errors);
         }
 
         await _userManager.AddToRoleAsync(user, FSHRoles.Basic);
