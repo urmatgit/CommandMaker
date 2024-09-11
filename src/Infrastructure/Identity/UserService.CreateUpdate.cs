@@ -116,6 +116,7 @@ internal partial class UserService
             PhoneNumber = request.PhoneNumber,
             //EmailConfirmed=true,
             PhoneNumberConfirmed=true,
+            BirthDate = request.BirthDate,
             IsActive = true
         };
         
@@ -179,6 +180,7 @@ internal partial class UserService
         user.FirstName = request.FirstName;
         user.LastName = request.LastName;
         user.PhoneNumber = request.PhoneNumber;
+        user.BirthDate = request.BirthDate;
         string? phoneNumber = await _userManager.GetPhoneNumberAsync(user);
         if (request.PhoneNumber != phoneNumber)
         {

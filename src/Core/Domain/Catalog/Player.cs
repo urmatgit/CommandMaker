@@ -16,8 +16,10 @@ public class Player : AuditableEntity, IAggregateRoot
     public byte Level { get; private set; } = 0;
     public DefaultIdType UserId { get;set; }
     public DefaultIdType TeamId { get; private set; }
-    public virtual Team Team { get; private set; }
-    public Player(string name,string? phone,  byte age, byte level,DefaultIdType userId,  DefaultIdType teamId)
+    public virtual Team Team { get;   set; }
+    public DefaultIdType GameId { get; private set; }
+    public virtual Game Game { get;  set; }
+    public Player(string name,string? phone,  byte age, byte level,DefaultIdType userId,  DefaultIdType teamId,DefaultIdType gameid)
     {
         Name = name;
         Age = age;
@@ -25,10 +27,10 @@ public class Player : AuditableEntity, IAggregateRoot
         TeamId = teamId;
         Phone = phone;
         UserId = userId;
-
+        GameId=gameid;
     }
 
-    public Player Update(string? name,string? phone, byte age, byte level,DefaultIdType userid,  DefaultIdType teamId)
+    public Player Update(string? name,string? phone, byte age, byte level,DefaultIdType userid,  DefaultIdType teamId,DefaultIdType gameid)
     {
         if (name is not null && Name?.Equals(name) is not true) Name = name;
         if (age != Age) Age = age;
@@ -36,6 +38,7 @@ public class Player : AuditableEntity, IAggregateRoot
         if (teamId != TeamId) TeamId = teamId;
         if (phone is not null && Phone?.Equals(phone) is not true) Phone = phone;
         if (UserId!=userid) UserId = userid;
+        if (GameId!=gameid) GameId = gameid;
         return this;
     }
 }

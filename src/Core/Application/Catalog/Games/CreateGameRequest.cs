@@ -13,13 +13,18 @@ public class CreateGameRequest : IRequest<Guid>
 // Important leftout the T for the translations !
 
 public class CreateGameRequestValidator : CustomValidator<CreateGameRequest>
-{ 
-    public CreateGameRequestValidator(IReadRepository<Game> repository, IStringLocalizer<CreateGameRequestValidator> localizer) =>
-    RuleFor(p => p.Name)
-    .NotEmpty() 
-    .MustAsync(async (name, ct) => await repository.GetBySpecAsync(new GameByNameSpec(name), ct) is null) 
-   .WithMessage((_, name) => "Game {0} already Exists.");
-   
+{
+    public CreateGameRequestValidator(IReadRepository<Game> repository, IStringLocalizer<CreateGameRequestValidator> localizer)
+    {
+        RuleFor(p => p.Name)
+        .NotEmpty()
+        .MustAsync(async (name, ct) => await repository.GetBySpecAsync(new GameByNameSpec(name), ct) is null)
+       .WithMessage((_, name) => "Game {0} already Exists.");
+        RuleFor(p => p.DateTime)
+            .NotEmpty()
+            .InclusiveBetween( DateTime.Now, DateTime.Now.AddMonths(3))
+            .WithMessage("The date can be set up to 3 months!");
+    }
 }
 
 public class CreateGameRequestHandler : IRequestHandler<CreateGameRequest, Guid>

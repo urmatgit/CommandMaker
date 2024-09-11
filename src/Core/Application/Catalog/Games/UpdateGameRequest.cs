@@ -5,7 +5,7 @@ public class UpdateGameRequest : IRequest<Guid>
     public Guid Id { get; set; }
     public string Name { get; set; } = default!;
 	public string? Description { get; set; }
-	public DateTime DateTime { get; set; }
+	public DateTime? DateTime { get; set; }
     public TimeSpan? Time { get; set; }
 
 }
@@ -38,7 +38,7 @@ public class UpdateGameRequestHandler : IRequestHandler<UpdateGameRequest, Guid>
 
         _ = game
         ?? throw new NotFoundException(_t["Game {0} Not Found.", request.Id]);
-        var datetime = new DateTime(request.DateTime.Year, request.DateTime.Month, request.DateTime.Day, request.Time.Value.Hours, request.Time.Value.Minutes, request.Time.Value.Seconds);
+        var datetime = new DateTime(request.DateTime.Value.Year, request.DateTime.Value.Month, request.DateTime.Value.Day, request.Time.Value.Hours, request.Time.Value.Minutes, request.Time.Value.Seconds);
 
         game.Update(request.Name, datetime, request.Description);
 

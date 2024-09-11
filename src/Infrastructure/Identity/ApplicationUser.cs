@@ -12,4 +12,5 @@ public class ApplicationUser : IdentityUser
     public DateTime RefreshTokenExpiryTime { get; set; }
 
     public string? ObjectId { get; set; }
+    public DateTime? BirthDate { get; set; }
 }

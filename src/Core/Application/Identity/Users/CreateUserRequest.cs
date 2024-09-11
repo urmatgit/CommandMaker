@@ -9,4 +9,5 @@ public class CreateUserRequest
     public string Password { get; set; } = default!;
     public string ConfirmPassword { get; set; } = default!;
     public string PhoneNumber { get; set; } = default!;
+    public DateTime? BirthDate { get; set; } = default!;
 }

@@ -49,7 +49,7 @@ public class GameSeeder : ICustomSeeder
             team = team ?? await _db.Teams.FirstOrDefaultAsync(cancellationToken);
             List<Player> players = new List<Player>();
             for (int i = 1; i < 7; i++) {
-                var player = new Player($"Player {i}", $"+7950000000{i}", (byte)(14 + i), 0, Guid.Empty, team.Id);
+                var player = new Player($"Player {i}", $"+7950000000{i}", (byte)(14 + i), 0, Guid.Empty, team.Id, game.Id);
                 players.Add(player);
             }
             await _db.Players.AddRangeAsync(players,cancellationToken);

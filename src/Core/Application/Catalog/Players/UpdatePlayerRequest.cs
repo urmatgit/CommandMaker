@@ -11,7 +11,8 @@ public class UpdatePlayerRequest : IRequest<Guid>
 	public byte Level { get; set; }
 	public DefaultIdType UserId { get; set; }
 	public DefaultIdType TeamId { get; set; }
-   
+    public DefaultIdType GameId { get; set; }
+
 }
 
 public class UpdatePlayerRequestHandler : IRequestHandler<UpdatePlayerRequest, Guid>
@@ -31,8 +32,8 @@ public class UpdatePlayerRequestHandler : IRequestHandler<UpdatePlayerRequest, G
 
                
         
-        var updatedPlayer = player.Update(request.Name, request.Phone, request.Age, request.Level, request.UserId, request.TeamId);
-
+        var updatedPlayer = player.Update(request.Name, request.Phone, request.Age, request.Level, request.UserId, request.TeamId,request.GameId);
+        
         // Add Domain Events to be raised after the commit
         player.DomainEvents.Add(EntityUpdatedEvent.WithEntity(player));
 

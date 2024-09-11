@@ -12,7 +12,8 @@ public class CreatePlayerRequest : IRequest<Guid>
 	public byte Level { get; set; }
 	public DefaultIdType UserId { get; set; }
 	public DefaultIdType TeamId { get; set; }
-    
+    public DefaultIdType GameId { get; set; }
+
 }
 
 public class CreatePlayerRequestHandler : IRequestHandler<CreatePlayerRequest, Guid>
@@ -24,7 +25,7 @@ public class CreatePlayerRequestHandler : IRequestHandler<CreatePlayerRequest, G
 
     public async Task<Guid> Handle(CreatePlayerRequest request, CancellationToken cancellationToken)
     {
-        var player = new Player(request.Name, request.Phone, request.Age, request.Level, request.UserId, request.TeamId);
+        var player = new Player(request.Name, request.Phone, request.Age, request.Level, request.UserId, request.TeamId,request.GameId);
 
         // Add Domain Events to be raised after the commit
         player.DomainEvents.Add(EntityCreatedEvent.WithEntity(player));

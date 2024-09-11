@@ -36,5 +36,9 @@ public class UpdateUserRequestValidator : CustomValidator<UpdateUserRequest>
             .MustAsync(async (user, phone, _) => !await userService.ExistsWithPhoneNumberAsync(phone!, user.Id))
                 .WithMessage((_, phone) => string.Format(T["Phone number {0} is already registered."], phone))
                 .Unless(u => string.IsNullOrWhiteSpace(u.PhoneNumber));
+        RuleFor(p => p.BirthDate).Cascade(CascadeMode.Stop)
+            .NotEmpty()
+            .InclusiveBetween(new DateTime(1900, 01, 01), DateTime.Now)
+            .WithMessage("The birth date is incorrect");
     }
 }
