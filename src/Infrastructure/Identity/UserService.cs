@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using System.Threading;
 
 namespace FSH.WebApi.Infrastructure.Identity;
 
@@ -149,5 +150,14 @@ internal partial class UserService : IUserService
         await _userManager.UpdateAsync(user);
 
         await _events.PublishAsync(new ApplicationUserUpdatedEvent(user.Id));
+    }
+
+    public async Task<bool> IsInRoleAsync(string userId, string role, CancellationToken cancellationToken)
+    {
+        var user = await _userManager.Users.Where(u => u.Id == userId).FirstOrDefaultAsync(cancellationToken);
+
+        _ = user ?? throw new NotFoundException(_t["User Not Found."]);
+
+        return await _userManager.IsInRoleAsync(user, role);
     }
 }

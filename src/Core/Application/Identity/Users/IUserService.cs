@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Threading;
 using FSH.WebApi.Application.Identity.Users.Password;
 
 namespace FSH.WebApi.Application.Identity.Users;
@@ -16,7 +17,7 @@ public interface IUserService : ITransientService
     Task<int> GetCountAsync(CancellationToken cancellationToken);
 
     Task<UserDetailsDto> GetAsync(string userId, CancellationToken cancellationToken);
-
+    Task<bool> IsInRoleAsync(string userId, string role,CancellationToken cancellationToken);
     Task<List<UserRoleDto>> GetRolesAsync(string userId, CancellationToken cancellationToken);
     Task<string> AssignRolesAsync(string userId, UserRolesRequest request, CancellationToken cancellationToken);
 

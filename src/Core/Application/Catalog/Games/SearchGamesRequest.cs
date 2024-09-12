@@ -38,7 +38,9 @@ public class SearchGamesRequestHandler : IRequestHandler<SearchGamesRequest, Pag
     {
             var currentUserId = _currentUser.GetUserId();
             var allData = await _userService.HasPermissionAsync(currentUserId.ToString(), FSHPermission.NameFor(FSHAction.ViewAll, FSHResource.Games));
-            
+        //var roles = await _userService.GetRolesAsync(currentUserId.ToString(), cancellationToken);
+       
+            allData = allData || await _userService.IsInRoleAsync(currentUserId.ToString(), FSHRoles.Basic,cancellationToken); 
             var spec = new GamesBySearchRequestSpec(request,!allData?currentUserId: Guid.Empty);
         return await _repository.PaginatedListAsync(spec, request.PageNumber, request.PageSize, cancellationToken);
     }
