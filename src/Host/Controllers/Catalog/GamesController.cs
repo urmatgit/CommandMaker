@@ -27,6 +27,20 @@ public class GamesController : VersionedApiController
     {
         return Mediator.Send(request);
     }
+    [HttpPost("addplayer")]
+    [MustHavePermission(FSHAction.View, FSHResource.Players)]
+    [OpenApiOperation("Add player to game.", "")]
+    public Task<Guid> AddPlayerAsync(AddPlayerRequest request)
+    {
+        return Mediator.Send(request);
+    }
+    [HttpPost("removeplayer")]
+    [MustHavePermission(FSHAction.View, FSHResource.Players)]
+    [OpenApiOperation("Remove player in game.", "")]
+    public Task<Guid> RemovePlayerAsync(RemovePlayerRequest request)
+    {
+        return Mediator.Send(request);
+    }
 
     [HttpPut("{id:guid}")]
     [MustHavePermission(FSHAction.Update, FSHResource.Games)]

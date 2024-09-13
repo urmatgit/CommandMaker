@@ -8,7 +8,9 @@ public class GameDto : IDto
 	public Guid Id { get; set; }
 	public string Name { get; set; } = default!;
 	public string? Description { get; set; }
+
 	public DateTime? DateTime { get; set; }
+    public bool CurrentUserIn { get; set; }
     public TimeSpan? Time {
         get
         {

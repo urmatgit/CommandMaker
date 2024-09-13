@@ -30,8 +30,11 @@ public class GetStatsRequestHandler : IRequestHandler<GetStatsRequest, StatsDto>
 
     public async Task<StatsDto> Handle(GetStatsRequest request, CancellationToken cancellationToken)
     {
+
         var currentUserId = _currentUser.GetUserId();
+        
         var viewallPermission = await _userService.HasPermissionAsync(currentUserId.ToString(), FSHPermission.NameFor(FSHAction.ViewAll, FSHResource.Games));
+        viewallPermission = viewallPermission || await _userService.IsInRoleAsync(currentUserId.ToString(), FSHRoles.Basic, cancellationToken);
         if (viewallPermission) currentUserId = Guid.Empty;
         var stats = new StatsDto
         {

@@ -25,6 +25,7 @@ public class SearchTeamsRequestHandler : IRequestHandler<SearchTeamsRequest, Pag
     {
         var currentUserId = _currentUser.GetUserId();
         var allData = await _userService.HasPermissionAsync(currentUserId.ToString(), FSHPermission.NameFor(FSHAction.ViewAll, FSHResource.Games));
+        allData = allData || await _userService.IsInRoleAsync(currentUserId.ToString(), FSHRoles.Basic, cancellationToken);
         var spec = new TeamsBySearchRequestWithGamesSpec(request,allData? Guid.Empty:currentUserId);
         return await _repository.PaginatedListAsync(spec, request.PageNumber, request.PageSize, cancellationToken: cancellationToken);
     }

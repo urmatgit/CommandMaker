@@ -15,11 +15,11 @@ public class Player : AuditableEntity, IAggregateRoot
     [Range(0,5)]
     public byte Level { get; private set; } = 0;
     public DefaultIdType UserId { get;set; }
-    public DefaultIdType TeamId { get; private set; }
+    public DefaultIdType? TeamId { get;  set; }
     public virtual Team Team { get;   set; }
-    public DefaultIdType GameId { get; private set; }
+    public DefaultIdType? GameId { get;  set; }
     public virtual Game Game { get;  set; }
-    public Player(string name,string? phone,  byte age, byte level,DefaultIdType userId,  DefaultIdType teamId,DefaultIdType gameid)
+    public Player(string name,string? phone,  byte age, byte level,DefaultIdType userId,  DefaultIdType? teamId,DefaultIdType? gameid)
     {
         Name = name;
         Age = age;
@@ -29,7 +29,7 @@ public class Player : AuditableEntity, IAggregateRoot
         UserId = userId;
         GameId=gameid;
     }
-    public Player(string name, string? phone, byte age, byte level, DefaultIdType userId, DefaultIdType teamId):this(name,phone,age,level,userId,teamId,Guid.Empty)
+    public Player(string name, string? phone, byte age, byte level, DefaultIdType userId, DefaultIdType? teamId):this(name,phone,age,level,userId,teamId,null)
     {
         
     }

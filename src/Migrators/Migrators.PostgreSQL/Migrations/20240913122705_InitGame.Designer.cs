@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Migrators.PostgreSQL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240829103754_InitGame")]
+    [Migration("20240913122705_InitGame")]
     partial class InitGame
     {
         /// <inheritdoc />
@@ -38,7 +38,8 @@ namespace Migrators.PostgreSQL.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("DateTime")
+                    b.Property<DateTime?>("DateTime")
+                        .IsRequired()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("DeletedBy")
@@ -49,6 +50,9 @@ namespace Migrators.PostgreSQL.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsArchive")
+                        .HasColumnType("boolean");
 
                     b.Property<Guid>("LastModifiedBy")
                         .HasColumnType("uuid");
@@ -95,6 +99,9 @@ namespace Migrators.PostgreSQL.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid?>("GameId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("LastModifiedBy")
                         .HasColumnType("uuid");
 
@@ -112,7 +119,7 @@ namespace Migrators.PostgreSQL.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("TeamId")
+                    b.Property<Guid?>("TeamId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("TenantId")
@@ -124,6 +131,8 @@ namespace Migrators.PostgreSQL.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GameId");
 
                     b.HasIndex("TeamId");
 
@@ -312,6 +321,9 @@ namespace Migrators.PostgreSQL.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime?>("BirthDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -518,11 +530,15 @@ namespace Migrators.PostgreSQL.Migrations
 
             modelBuilder.Entity("FSH.WebApi.Domain.Catalog.Player", b =>
                 {
+                    b.HasOne("FSH.WebApi.Domain.Catalog.Game", "Game")
+                        .WithMany()
+                        .HasForeignKey("GameId");
+
                     b.HasOne("FSH.WebApi.Domain.Catalog.Team", "Team")
                         .WithMany()
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TeamId");
+
+                    b.Navigation("Game");
 
                     b.Navigation("Team");
                 });

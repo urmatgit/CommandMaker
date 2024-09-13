@@ -45,7 +45,6 @@ public class CreateUserRequestValidator : CustomValidator<CreateUserRequest>
             .NotEmpty()
             .Equal(p => p.Password);
         RuleFor(p=>p.BirthDate).Cascade(CascadeMode.Stop)
-            .NotEmpty()
             .InclusiveBetween(new DateTime(1900,01,01),DateTime.Now)
             .WithMessage("The birth date is incorrect"); 
     }

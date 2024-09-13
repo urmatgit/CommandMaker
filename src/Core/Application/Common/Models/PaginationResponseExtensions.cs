@@ -12,4 +12,13 @@ public static class PaginationResponseExtensions
 
         return new PaginationResponse<TDestination>(list, count, pageNumber, pageSize);
     }
+    public static async Task<List<T>> GetListAsync<T>(
+       this IReadRepositoryBase<T> repository, ISpecification<T> spec,  CancellationToken cancellationToken = default)
+       where T : class
+       
+    {
+        var list = await repository.ListAsync(spec, cancellationToken);
+
+        return new List<T>(list);
+    }
 }
