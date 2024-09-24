@@ -16,7 +16,7 @@ public class TeamCreatedEventHandler : EventNotificationHandler<EntityCreatedEve
         var basicNot = new BasicNotification();
         basicNot.Message = name;
         basicNot.Label = BasicNotification.LabelType.Information;
-         return  _notifications.SendToGroupAsync(basicNot,"Admin", cancellationToken);
+         return  _notifications.SendToUserAsync(basicNot,"Admin", cancellationToken);
         //return Task.CompletedTask;
     }
 }

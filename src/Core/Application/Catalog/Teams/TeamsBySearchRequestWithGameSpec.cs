@@ -8,7 +8,7 @@ public class TeamsBySearchRequestWithGamesSpec : EntitiesByPaginationFilterSpec<
         Query
             .Include(p => p.Game)
 //            .OrderBy(c => c.<&Orderby&>, !request.HasOrderBy())
-            .Where(p=>p.Game.CreatedBy==onlyMy,onlyMy!=Guid.Empty  )
+            .ThenInclude(p => p.CreatedBy==onlyMy,onlyMy!=Guid.Empty  )
             .Where(p => p.GameId.Equals(request.GameId!.Value), request.GameId.HasValue);
 }
             
